@@ -1,4 +1,4 @@
-package com.denilany.let_s_play_api;
+package com.denilany.letsplayapi;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

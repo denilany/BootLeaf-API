@@ -1,4 +1,4 @@
-package com.denilany.let_s_play_api;
+package com.denilany.letsplayapi;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
