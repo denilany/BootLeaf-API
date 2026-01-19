@@ -1,4 +1,4 @@
-package com.denilany.letsplayapi.config.dto;
+package com.denilany.letsplayapi.dto;
 
 @Data
 public class JwtResponse {
