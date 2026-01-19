@@ -19,6 +19,7 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable()) // Disable CSRF for REST API
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/users/register").permitAll() // Allow public access to registration
+                .requestMatchers("/api/users/login").permitAll() // Allow public access to login
                 .requestMatchers("/api/products").permitAll() // Allow public access to view all products
                 .anyRequest().authenticated() // All other endpoints require authentication
             )
