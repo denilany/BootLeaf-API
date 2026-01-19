@@ -14,20 +14,22 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-            .csrf(csrf -> csrf.disable()) // Disable CSRF for REST API
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/users/register").permitAll() // Allow public access to registration
-                .requestMatchers("/api/users/login").permitAll() // Allow public access to login
-                .requestMatchers("/api/products").permitAll() // Allow public access to view all products
-                .anyRequest().authenticated() // All other endpoints require authentication
-            )
-            .sessionManagement(session -> session
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Stateless sessions for REST API
-            )
-            .httpBasic(httpBasic -> {}); // Enable HTTP Basic authentication for protected endpoints
+    public AuthTokenFilter authenticationJwtTokenFilter() {
+        return new AuthTokenFilter();
+    }
 
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.csrf(csrf -> csrf.disable()) // Disable CSRF for REST APIs
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .authorizeHttpRequests(auth -> 
+                auth.requestMatchers("/api/users/register").permitAll() // Registration is public
+                    .requestMatchers(HttpMethod.GET, "/api/products/**").permitAll() // GET Products is public
+                    .anyRequest().authenticated() // Everything else needs a JWT
+            );
+
+        http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+        
         return http.build();
     }
 
